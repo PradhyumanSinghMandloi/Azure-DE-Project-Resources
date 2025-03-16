@@ -1,0 +1,9 @@
+{
+	"name": "adf-cars-pradhyuman",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8072012f-1672-4245-9c06-5a334978a747",
+		"tenantId": "0eeef806-50c0-4ad9-8270-4ab7274fd28e"
+	}
+}
