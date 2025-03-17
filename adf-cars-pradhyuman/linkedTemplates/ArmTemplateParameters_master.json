@@ -5,8 +5,14 @@
 		"factoryName": {
 			"value": "adf-cars-pradhyuman"
 		},
+		"ls_datalake_accountKey": {
+			"value": ""
+		},
 		"ls_sqlDB_password": {
 			"value": ""
+		},
+		"ls_datalake_properties_typeProperties_url": {
+			"value": "https://carpradhyumandatalake.dfs.core.windows.net/"
 		},
 		"ls_github_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com"
