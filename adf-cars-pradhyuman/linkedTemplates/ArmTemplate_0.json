@@ -458,7 +458,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "select * \nfrom source_cars_data\nwhere   \n    date_id <= @{activity('current_date').output.value[0].max_date}\n    and  date_id > @{activity('last_load').output.value[0].last_load}\n",
+									"value": "select * \nfrom source_cars_data\nwhere   \n   date_id > '@{activity('last_load').output.value[0].last_load}'\n   and\n   date_id <= '@{activity('current_date').output.value[0].max_date}'",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -557,6 +557,42 @@
 							},
 							"firstRowOnly": false
 						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "copy_increm_data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[UpdateWaterMarktable]",
+							"storedProcedureParameters": {
+								"last_load": {
+									"value": {
+										"value": "@activity('current_date').output.value[0].max_date",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_sqlDB",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -566,7 +602,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_sqlDB')]",
-				"[concat(variables('factoryId'), '/datasets/ds_bronze')]"
+				"[concat(variables('factoryId'), '/datasets/ds_bronze')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_sqlDB')]"
 			]
 		}
 	]
